@@ -39,11 +39,11 @@ To create the terraform plan, run:<br/>
 
 To execute the terraform plan, run:<br/>
 ```terraform apply```<br/>
-Type ```yes``` at the prompt to confirm the launcyh of cloud resources.<br/>
+Type ```yes``` at the prompt to confirm the launch of cloud resources.<br/>
 
-After you run ```terraform apply``` I recommend going into the AWS console and make sure that all the resources specified in your script have been launched<br/>
+After you run ```terraform apply``` I recommend going into the AWS console and visually make sure that all the resources specified in your script have been launched.<br/>
 
-**Always remember to destroy your resources, so that you do not get charged excessively through your cloud provider** <br/>
+**Always remember to destroy your resources, so that you do not get charged excessively by your cloud provider** <br/>
 To do this, run:<br/>
 ```terraform destroy```<br/>
 Types ```yes``` at the prompt to confirm the destroy.<br/>
