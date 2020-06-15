@@ -35,7 +35,6 @@ If you want to format your .tf file you can use the following command<br/>
 
 To create the terraform plan, run:<br/>
 ```terraform plan```<br/>
-Type ```yes``` at the prompt to confirm the plan.<br/>
 
 To execute the terraform plan, run:<br/>
 ```terraform apply```<br/>
