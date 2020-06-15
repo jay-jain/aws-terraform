@@ -4,7 +4,7 @@
 
 ### An AWS Account
 
-You will need to sign up for an AWS account. These examples are meant for Free Tier (the 12-month free trial in AWS). You will need to go in the IAM console and create a user account and download the credentials. From these credentials, you will need the Access Key ID and Secret Access Key in the next step.
+You will need to sign up for an AWS account. These examples are meant for Free Tier (the 12-month free trial in AWS). You will need to go in the IAM console and create a user account and download the credentials. From these credentials, you will need the **Access Key ID** and **Secret Access Key** in the next step.
 
 ### AWS CLI
 Download the CLI from here: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html <br/>
@@ -16,7 +16,7 @@ Enter your output format: ```json```<br/>
 
 ### Git-SCM
 Install Git-SCM: https://git-scm.com/download/win<br/>
-You will now need to generate a ssh keypair with the following command in Git Bash: ```ssh-keygen -t rsa```<br/>
+You will now need to generate a ssh keypair with the following command in Git Bash: ```ssh-keygen.exe -t rsa```<br/>
 You should name the keypair ```terraform```. It should save two files in the ```.ssh``` directory in your home folder.<br/>
 It will save a public key called ```terraform.pub``` and a private key called ```terraform```.<br/>
 **Make sure that you modify the path of the location for your ssh public and private keys in your terraform scripts. <br/>**
