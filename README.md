@@ -18,14 +18,14 @@ Enter your output format: ```json```<br/>
 Install Git-SCM: https://git-scm.com/download/win<br/>
 You will now need to generate a ssh keypair with the following command in Git Bash: ```ssh-keygen -t rsa```<br/>
 You should name the keypair ```terraform```. It should save in the ```.ssh``` directory in your home folder.<br/>
-Make sure that you modify the path of your ssh public and private keys in your terraform scripts. <br/>
+**Make sure that you modify the path of the location for your ssh public and private keys in your terraform scripts. <br/>**
 
 ### Terraform 
 To download terraform: https://www.terraform.io/downloads.html<br/>
 Follow the install instructions here (Manual Install): https://learn.hashicorp.com/terraform/getting-started/install.html<br/>
 Make sure you set the path for your terraform.exe file. Here are some instructions: https://stackoverflow.com/questions/1618280/where-can-i-set-path-to-make-exe-on-windows<br/>
 
-## Running Terraform Script
+## Running Terraform Scripts
 
 If it is your first time running a particular terraform script, navigate to the directory to where your script is located and execute the following command in PowerShell or CMD:<br/>
 ```terraform init```<br/>
