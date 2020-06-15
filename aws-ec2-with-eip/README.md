@@ -15,11 +15,14 @@ With the temporary static IP, you are assigned this static IP when the instance 
 terminated.
 
 ## What does this script do?
-1) Launches an EC2 instance of type t2.micro with the Amazon Linux 2 AMI
-2) Places the instance in the default VPC
-3) Specifically, a Security Group within the VPC is created that allows for SSH Access (Port 22) and HTTP Access (Port 80)
-4) Downloads and uses an SSH Key that is used to autonomously connect to the server and  then install and configures an nginx server
-5) Attaches an Elastic IP to the server so that you can view a webpage that is hosted on the server.
-6). Writes the Elastic IP address to a text file. After you successfully run the ```terraform apply``` command <br />
+**1)** Launches an EC2 instance of type t2.micro with the Amazon Linux 2 AMI<br />
+**2)** Places the instance in the default VPC<br />
+**3)** Specifically, a Security Group within the VPC is created that allows for SSH Access (Port 22) and HTTP Access (Port 80)<br />
+**4)** Downloads and uses an SSH Key from the server that is used to autonomously connect to the server and  then install and configures an nginx server<br />
+Note: As you will see in the script, the name of the key from the EC2 instance is called: ```ouroboros```<br/>
+If you were to do this process through the AWS Console GUI, you would be able to download and keep this file. In this example, we never deal directly <br/> 
+with this file directly; Terraform handles this process for us.<br/> 
+**5)** Attaches an Elastic IP to the server so that you can view a webpage that is hosted on the server.<br />
+**6)**. Writes the Elastic IP address to a text file. After you successfully run the ```terraform apply``` command <br />
 you can copy and paste that elastic IP from the text file into your web browser, where you will then be able to access a web page <br />
 hosted on that web browser.

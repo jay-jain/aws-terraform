@@ -27,8 +27,7 @@ resource "aws_instance" "webserver" {
 }
 
 resource "aws_key_pair" "kp" {
-  key_name = "ouroboros"
-  # public_key = file("~/.ssh/terraform.pub") # ssh-keygen -t rsa # chmod 400 ~/.ssh/terraform
+  key_name = "ouroboros"  
   public_key = file("C:/Users/jay.jain/.ssh/terraform.pub")
 }
 
@@ -36,16 +35,14 @@ resource "aws_eip" "ip" {
   vpc      = true
   instance = aws_instance.webserver.id
 
-  provisioner "local-exec" {
-    # command = "echo ${aws_instance.example.public_ip} > ip_address.txt"
+  provisioner "local-exec" {    
     command = "echo 'The Elastic IP of your web server is: ' ${aws_eip.ip.public_ip} > ip_address.txt"
   }
 }
 
 resource "aws_security_group" "WebServerSG" {
   name        = "WebServerSG"
-  description = "Allows inbound HTTP traffic and SSH traffic"
-  # vpc_id      = "${aws_vpc.main.id}"
+  description = "Allows inbound HTTP traffic and SSH traffic"  
 
   ingress {
     description     = "HTTP"

@@ -17,7 +17,8 @@ Enter your output format: ```json```<br/>
 ### Git-SCM
 Install Git-SCM: https://git-scm.com/download/win<br/>
 You will now need to generate a ssh keypair with the following command in Git Bash: ```ssh-keygen -t rsa```<br/>
-You should name the keypair ```terraform```. It should save in the ```.ssh``` directory in your home folder.<br/>
+You should name the keypair ```terraform```. It should save two files in the ```.ssh``` directory in your home folder.<br/>
+It will save a public key called ```terraform.pub``` and a private key called ```terraform```.<br/>
 **Make sure that you modify the path of the location for your ssh public and private keys in your terraform scripts. <br/>**
 
 ### Terraform 
@@ -40,7 +41,11 @@ To execute the terraform plan, run:<br/>
 ```terraform apply```<br/>
 Type ```yes``` at the prompt to confirm the launcyh of cloud resources.<br/>
 
+After you run ```terraform apply``` I recommend going into the AWS console and make sure that all the resources specified in your script have been launched<br/>
+
 **Always remember to destroy your resources, so that you do not get charged excessively through your cloud provider** <br/>
 To do this, run:<br/>
 ```terraform destroy```<br/>
 Types ```yes``` at the prompt to confirm the destroy.<br/>
+
+**Go into the AWS console to make sure that all the resources have been destroyed**

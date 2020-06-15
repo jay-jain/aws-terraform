@@ -24,23 +24,18 @@ resource "aws_instance" "webserver" {
       "echo \"<html><h1>This is Ouroboros Web Server</h1></html>\" | sudo tee /usr/share/nginx/html/index.html"
     ]
   }
+
+  provisioner "local-exec" {    
+    command = "echo 'The temporary static IP of your web server is: ' ${aws_instance.webserver.public_ip} > ip_address.txt"
+  }
 }
 
 resource "aws_key_pair" "kp" {
-  key_name = "ouroboros"
-  # public_key = file("~/.ssh/terraform.pub") # ssh-keygen -t rsa # chmod 400 ~/.ssh/terraform
+  key_name = "ouroboros"  
   public_key = file("C:/Users/jay.jain/.ssh/terraform.pub")
+
 }
 
-resource "aws_eip" "ip" {
-  vpc      = true
-  instance = aws_instance.webserver.id
-
-  provisioner "local-exec" {
-    # command = "echo ${aws_instance.example.public_ip} > ip_address.txt"
-    command = "echo 'The Elastic IP of your web server is: ' ${aws_eip.ip.public_ip} > ip_address.txt"
-  }
-}
 
 resource "aws_security_group" "WebServerSG" {
   name        = "WebServerSG"
@@ -48,20 +43,20 @@ resource "aws_security_group" "WebServerSG" {
   # vpc_id      = "${aws_vpc.main.id}"
 
   ingress {
-    description     = "HTTP"
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]
+    description      = "HTTP"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
 
   ingress {
-    description     = "SSH"
-    from_port       = 22
-    to_port         = 22
-    protocol        = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]
+    description      = "SSH"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
 
