@@ -41,7 +41,7 @@ To execute the terraform plan, run:<br/>
 ```terraform apply```<br/>
 Type ```yes``` at the prompt to confirm the launcyh of cloud resources.<br/>
 
-** Always remember to destroy your resources, so that you do not get charged excessively through your cloud provider**<br/>
+** Always remember to destroy your resources, so that you do not get charged excessively through your cloud provider** <br/>
 To do this, run:<br/>
 ```terraform destroy```<br/>
 Types ```yes``` at the prompt to confirm the destroy.<br/>
