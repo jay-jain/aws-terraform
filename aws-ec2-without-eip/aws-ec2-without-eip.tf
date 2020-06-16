@@ -1,11 +1,11 @@
 provider "aws" {
   profile = "default"
-  region  = "us-east-1"
+  region  = var.region
 }
 
 resource "aws_instance" "webserver" {
   key_name        = aws_key_pair.kp.key_name
-  ami             = "ami-09d95fab7fff3776c" # Linux AMI 2 in us-east-1
+  ami             = var.ami_map[var.region]
   instance_type   = "t2.micro"
   security_groups = ["${aws_security_group.WebServerSG.name}"]
 
@@ -13,7 +13,7 @@ resource "aws_instance" "webserver" {
     type        = "ssh"
     user        = "ec2-user"
     host        = self.public_ip
-    private_key = file("C:/Users/jay.jain/.ssh/terraform")
+    private_key = file(var.ssh_priv_key_path)
   }
 
   provisioner "remote-exec" {
@@ -25,14 +25,14 @@ resource "aws_instance" "webserver" {
     ]
   }
 
-  provisioner "local-exec" {    
-    command = "echo 'The temporary static IP of your web server is: ' ${aws_instance.webserver.public_ip} > ip_address.txt"
+  provisioner "local-exec" {
+    command = "echo The temporary static IP of your web server is: ${aws_instance.webserver.public_ip} > ip_address.txt"
   }
 }
 
 resource "aws_key_pair" "kp" {
-  key_name = "ouroboros"  
-  public_key = file("C:/Users/jay.jain/.ssh/terraform.pub")
+  key_name   = "ouroboros"
+  public_key = file(var.ssh_pub_key_path)
 
 }
 

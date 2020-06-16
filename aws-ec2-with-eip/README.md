@@ -26,3 +26,10 @@ with this file directly; Terraform handles this process for us.<br/>
 **6)**. Writes the Elastic IP address to a text file. After you successfully run the ```terraform apply``` command <br />
 you can copy and paste that elastic IP from the text file into your web browser, where you will then be able to access a web page <br />
 hosted on that web browser.
+
+## Optional
+Create a file called "terraform.tfvars" and define the ssh_priv_key_path and ssh_pub_key_path variables:
+```
+ssh_priv_key_path = "path/to/your/priv_key"
+ssh_pub_key_path = "path/to/your/pub_key.pub"
+```
