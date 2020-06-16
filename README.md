@@ -9,7 +9,7 @@ You will need to sign up for an AWS account. These examples are meant for Free T
 ### AWS CLI
 Download the CLI from here: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-windows.html <br/>
 Go into PowerShell (Run Elevated) <br/>
-Run the following command: ```aws-configure```<br/>
+Run the following command: ```aws configure```<br/>
 Enter in your Access Key ID and Secret Access Key.<br/>
 Enter your region: ```us-east-1```<br/>
 Enter your output format: ```json```<br/>
