@@ -8,7 +8,7 @@ resource "aws_iam_role" "demo-codepipeline" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Service": "codepipeline.amazonaws.com"
+        "Service": ["codepipeline.amazonaws.com","ecs-tasks.amazonaws.com"]
       },
       "Action": "sts:AssumeRole"
     }
@@ -80,5 +80,4 @@ resource "aws_iam_role_policy" "demo-codepipeline" {
   role   = aws_iam_role.demo-codepipeline.id
   policy = data.aws_iam_policy_document.demo-codepipeline-role-policy.json
 }
-
 

@@ -40,6 +40,16 @@ resource "aws_iam_role_policy" "demo-codebuild" {
       ]
     },
     {
+      "Sid": "CodeCommitPolicy",
+      "Effect": "Allow",
+      "Action": [
+        "codecommit:GitPull"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },
+    {
       "Effect": "Allow",
       "Action": [
         "ec2:CreateNetworkInterface",
@@ -120,4 +130,3 @@ resource "aws_iam_role_policy" "demo-codebuild" {
 POLICY
 
 }
-

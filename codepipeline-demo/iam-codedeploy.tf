@@ -50,6 +50,7 @@ data "aws_iam_policy_document" "demo-codedeploy-role-policy" {
       "${aws_s3_bucket.demo-artifacts.arn}/*",
     ]
   }
+
   statement {
     effect = "Allow"
     actions = [
@@ -72,5 +73,4 @@ resource "aws_iam_role_policy" "demo-codedeploy" {
   role   = aws_iam_role.demo-codedeploy.id
   policy = data.aws_iam_policy_document.demo-codedeploy-role-policy.json
 }
-
 

@@ -27,7 +27,7 @@ resource "aws_instance" "webserver" {
 }
 
 resource "aws_key_pair" "kp" {
-  key_name   = "ouroboros"
+  key_name   = "vidly"
   public_key = file(var.ssh_pub_key_path)
 }
 

@@ -1,4 +1,4 @@
 resource "aws_ecr_repository" "demo" {
-  name = "hello-world-vue"
+  name = var.ecr_repo_name
 }
 

@@ -13,3 +13,7 @@ variable "repo" {
 variable "github_token" {
   type = string
 }
+
+variable "var.ecr_repo_name" {
+  type=string
+}
