@@ -1,10 +1,11 @@
-## DNS Record
+# DNS Record
 resource "aws_route53_record" "gitlab" {
   zone_id = data.aws_route53_zone.zone.zone_id
   name    = "${var.gitlab_name}.${var.dns_zone_name}"
-  type    = "A"
+  type    = "CNAME"
   ttl     = "300"
-  records = [aws_instance.gitlab.public_ip]
+  # records = [aws_instance.gitlab.public_ip]
+  records = [aws_lb.gitlab.dns_name]
 }
 
 # Retrieves Hosted Zone Resource (Use this if the Hosted Zones has already been created)
