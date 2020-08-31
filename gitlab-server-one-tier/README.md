@@ -2,9 +2,13 @@
   
 
 # GitLab Server
-1. [Installation](#installation)
+1. [Architectures](#arch)
+2. [Installation](#installation)
+3. [Configuration](#config)
+4. [Miscellaneous](#misc)
+5. [To Do](#todo)
 
-## GitLab Server Architectures
+## GitLab Server Architectures <a name="arch"></a>
 
 There are two proposed architectures:
 
@@ -38,7 +42,7 @@ sudo apt-get install -y postfix
 
 ```
 
-## Configuration
+## Configuration <a name="config"></a>
 
 Although, there is a provided [bootstrap.sh](https://github.com/jay-jain/aws-terraform/blob/master/gitlab-server/bootstrap.sh) script which you can pass into user data, it is not recommended to use this. It is best to manually setup the server first, test the server, and then make an AMI of the server configuration. The reason for this is that if you install the GitLab server on an EC2 instance multiple times, LetsEncrypt will start to fail after a couple of times because there is a limit of how many times you can generate a certificate. Therefore, using an AMI image is better since it is not creating a new certificate each time. Additionally, LetsEncrypt automatic certificate renewal is turned on by default, so you don't have to worry about manually renewing the certificate as time passes.
 
@@ -152,7 +156,7 @@ In your Terraform code, you can then get the AMI ID and use it in your launch co
 
 To set the AMI id, you can to the [variables.tf](https://github.com/jay-jain/aws-terraform/blob/master/gitlab-server/variables.tf) file and replace it there.
 
-## Miscellaneous
+## Miscellaneous <a name="misc"></a>
 
 ### SSH into GitLab EC2 Instance
 
@@ -234,7 +238,7 @@ Replaces External URL line in ```gitlab.rb``` file:
 
   
 
-## Configuration for Container Registry (NGINX) behind ELB
+### Configuration for Container Registry (NGINX) behind ELB
 
 * https://forum.gitlab.com/t/insecure-registry/30643/3
 * 
@@ -242,7 +246,7 @@ Replaces External URL line in ```gitlab.rb``` file:
   
   
 
-## TODO
+## TODO <a name="todo"></a>
 
 * Implement [asg-dns-handler] (https://github.com/meltwater/terraform-aws-asg-dns-handler) for One-Tier Architecture
 
