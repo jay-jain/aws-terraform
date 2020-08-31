@@ -7,25 +7,43 @@ resource "aws_autoscaling_group" "gitlab" {
   max_size                  = 1
   min_size                  = 1
   health_check_type         = "EC2"
-  health_check_grace_period = 30  
+  health_check_grace_period = 30
   lifecycle {
     create_before_destroy = true
   }
+
   initial_lifecycle_hook {
-    name                 = "bootstrap-gitlab"
-    default_result       = "CONTINUE"
-    heartbeat_timeout    = 650
-    lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
+    name                    = "lifecycle-launching"
+    default_result          = "ABANDON"
+    heartbeat_timeout       = 60
+    lifecycle_transition    = "autoscaling:EC2_INSTANCE_LAUNCHING"
+    notification_target_arn = module.autoscale_dns.autoscale_handling_sns_topic_arn
+    role_arn                = module.autoscale_dns.agent_lifecycle_iam_role_arn
+  }
+
+  initial_lifecycle_hook {
+    name                    = "lifecycle-terminating"
+    default_result          = "ABANDON"
+    heartbeat_timeout       = 60
+    lifecycle_transition    = "autoscaling:EC2_INSTANCE_TERMINATING"
+    notification_target_arn = module.autoscale_dns.autoscale_handling_sns_topic_arn
+    role_arn                = module.autoscale_dns.agent_lifecycle_iam_role_arn
+  }
+  
+  tag {
+    key                 = "asg:hostname_pattern"
+    value               = "my-prefix-#instanceid.devops-vpc.testing@${data.aws_route53_zone.zone_id}"
+    propagate_at_launch = true
   }
 }
 
 resource "aws_launch_configuration" "gitlab" {
-  name_prefix     = "gitlab-server"
-  image_id        = var.ami_map[var.region]
-  instance_type   = "t2.medium"
-  key_name        = "gitlab"
-  security_groups = [aws_security_group.gitlab.id]
-  user_data       = file("bootstrap.sh")
+  name_prefix          = "gitlab-server"
+  image_id             = var.ami_map[var.region]
+  instance_type        = "t2.medium"
+  key_name             = "gitlab"
+  security_groups      = [aws_security_group.gitlab.id]
+  user_data            = file("bootstrap.sh")
   iam_instance_profile = aws_iam_instance_profile.profile.name
   lifecycle {
     create_before_destroy = true
