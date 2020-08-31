@@ -2,8 +2,7 @@
   
 
 # GitLab Server
-
-  
+1. [Installation](#installation)
 
 ## GitLab Server Architectures
 
@@ -21,7 +20,7 @@ There are two proposed architectures:
 
 ![Two-Tier](/images/two-tier.png)
 
-## Installation
+## Installation <a name="installation"></a>
 
 Make sure to fill in the subdomain and domain you which to use on the fourth command.
 
