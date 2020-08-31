@@ -15,7 +15,7 @@ resource "aws_autoscaling_group" "gitlab" {
   initial_lifecycle_hook {
     name                 = "bootstrap-gitlab"
     default_result       = "CONTINUE"
-    heartbeat_timeout    = 900
+    heartbeat_timeout    = 650
     lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
   }
 }
@@ -27,7 +27,7 @@ resource "aws_launch_configuration" "gitlab" {
   key_name        = "gitlab"
   security_groups = [aws_security_group.gitlab.id]
   user_data       = file("bootstrap.sh")
-
+  iam_instance_profile = aws_iam_instance_profile.profile.name
   lifecycle {
     create_before_destroy = true
   }

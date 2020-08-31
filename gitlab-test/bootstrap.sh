@@ -23,4 +23,7 @@ sudo apt-get install -y postfix
 #sudo sed -i "32s/.*/external_url 'https:\/\/git.sci-tings.org'/" /etc/gitlab/gitlab.rb
 #sudo gitlab-ctl reconfigure
 
+sudo apt-get install -y awscli
+sudo gitlab-ctl reconfigure
+
 echo $(date) >> ~/date.txt
