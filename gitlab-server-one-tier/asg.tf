@@ -2,13 +2,12 @@ resource "aws_autoscaling_group" "gitlab" {
   name                      = "gitlab-asg"
   depends_on                = [aws_launch_configuration.gitlab]
   launch_configuration      = aws_launch_configuration.gitlab.name
-  vpc_zone_identifier       = [aws_subnet.private-1.id,aws_subnet.private-2.id]
+  vpc_zone_identifier       = [aws_subnet.public-1.id]
   desired_capacity          = 1
   max_size                  = 1
   min_size                  = 1
-  health_check_type         = "ELB"
-  health_check_grace_period = 30
-  target_group_arns = [aws_lb_target_group.gitlab-tg.arn]
+  health_check_type         = "EC2"
+  health_check_grace_period = 30  
   lifecycle {
     create_before_destroy = true
   }
@@ -33,6 +32,7 @@ resource "aws_launch_configuration" "gitlab" {
   }
 }
 
+### Remember to restrict ingress by Source IP Addresses
 resource "aws_security_group" "gitlab" {
   name        = "GitlabSG"
   description = "Allows inbound HTTP/HTTPS traffic and SSH traffic"
@@ -60,6 +60,14 @@ resource "aws_security_group" "gitlab" {
     description      = "HTTP"
     from_port        = 80
     to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+  ingress {
+    description      = "Container registry port"
+    from_port        = 5050
+    to_port          = 5050
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]

@@ -3,8 +3,8 @@ resource "aws_route53_record" "gitlab" {
   zone_id = data.aws_route53_zone.zone.zone_id
   name    = "${var.gitlab_name}.${var.dns_zone_name}"
   type    = "CNAME"
-  ttl     = "300"
-  # records = [aws_instance.gitlab.public_ip]
+  ttl     = "300"  
+  # records = [aws_instance.gitlab.public_ip] ### Use this line if you are using EC2 instance
   records = [aws_lb.gitlab.dns_name]
 }
 

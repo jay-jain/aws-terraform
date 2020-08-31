@@ -8,7 +8,7 @@ variable "ami_map" {
   type        = map(string)
   description = "Map of AMIs and their regions"
   default = {
-    "us-east-1" = "ami-0bcc094591f354be2"
+    "us-east-1" = "AMI ID GOES HERE"
   }
 }
 

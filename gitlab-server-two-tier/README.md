@@ -75,8 +75,9 @@ The instance will go down for a little while, but after a couple of minutes it s
 ### Make an AMI
 In the EC2 Console, you can select the instance and make an image. This can take a while (around 10-15 minutes). This will also cause your EC2 instance to become unresponsive for that time period.
 In your Terraform code, you can then get the AMI ID and use it in your launch configuration, so that you can have a fully configured AMI ready to go for your auto-scaling group.
-### 
-## SSH into GitLab EC2 Instance
+To set the AMI id, you can to the [variables.tf](https://github.com/jay-jain/aws-terraform/blob/master/gitlab-server/variables.tf) file and replace it there. 
+## Miscellaneous 
+### SSH into GitLab EC2 Instance
 To SSH into the GitLab server easily, you must assign the same private key to both the bastion host and the GitLab instance.
 Then add the private key (in .pem format) to your ssh keychain with:
 
@@ -93,3 +94,25 @@ You can SSH into your bastion host with :
 ``` ssh -A ubuntu@<bastion-IP-address or DNS-entry> ```
 
 Then you can SSH into your private instance the same way.
+
+### Disable LetsEncrypt on install
+```
+sudo GITLAB_OMNIBUS_CONFIG="letsencrypt['enable'] = false" EXTERNAL_URL="https://<SUBDOMAIN>.<DOMAIN>" apt-get install gitlab-ee
+```
+### Bootstrap Script -  Install Postfix
+If you want to boostrap install postfix, you will need some extra code to handle the configuration screen that comes up:
+```
+sudo apt install -y debconf-utils
+
+echo  "postfix postfix/main_mailer_type select Internet Site"  | debconf-set-selections
+
+echo  "postfix postfix/mailname string gitlab.sci-tings.org"  | debconf-set-selections
+
+sudo apt-get install -y postfix
+```
+
+### Bootstrap Script - Replace Lines in Configuration File
+Replaces External URL line in ```gitlab.rb``` file:
+```sudo sed -i "32s/.*/external_url 'https:\/\/<SUBDOMAIN>.<DOMAIN>'/"/etc/gitlab/gitlab.rb```
+### Renew LetsEncrypt Certificates Manually
+``` sudo gitlab-ctl renew-le-certs ```
