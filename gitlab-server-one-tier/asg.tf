@@ -15,7 +15,7 @@ resource "aws_autoscaling_group" "gitlab" {
   initial_lifecycle_hook {
     name                    = "lifecycle-launching"
     default_result          = "ABANDON"
-    heartbeat_timeout       = 60
+    heartbeat_timeout       = 600
     lifecycle_transition    = "autoscaling:EC2_INSTANCE_LAUNCHING"
     notification_target_arn = module.autoscale_dns.autoscale_handling_sns_topic_arn
     role_arn                = module.autoscale_dns.agent_lifecycle_iam_role_arn
@@ -24,7 +24,7 @@ resource "aws_autoscaling_group" "gitlab" {
   initial_lifecycle_hook {
     name                    = "lifecycle-terminating"
     default_result          = "ABANDON"
-    heartbeat_timeout       = 60
+    heartbeat_timeout       = 100
     lifecycle_transition    = "autoscaling:EC2_INSTANCE_TERMINATING"
     notification_target_arn = module.autoscale_dns.autoscale_handling_sns_topic_arn
     role_arn                = module.autoscale_dns.agent_lifecycle_iam_role_arn
@@ -32,7 +32,7 @@ resource "aws_autoscaling_group" "gitlab" {
   
   tag {
     key                 = "asg:hostname_pattern"
-    value               = "my-prefix-#instanceid.devops-vpc.testing@${data.aws_route53_zone.zone_id}"
+    value               = "my_asg_handler-#instanceid.devops-vpc.testing@${aws_route53_zone.private.zone_id}"
     propagate_at_launch = true
   }
 }

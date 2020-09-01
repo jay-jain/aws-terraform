@@ -11,18 +11,3 @@ variable "ami_map" {
     "us-east-1" = "AMI ID GOES HERE"
   }
 }
-
-variable "dns_zone_name" {
-  description = "The name of the DNS zone on Route53 (example.com), to create records in for gitlab"
-  type        = string
-}
-
-variable "gitlab_name" {
-  description = "To generate the DNS record for gitlab, prefix the zone"
-  default     = "gitlab"
-  type        = string
-}
-
-variable "hosted_zone_id" {
-  type = string
-}
