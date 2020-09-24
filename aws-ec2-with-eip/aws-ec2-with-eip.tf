@@ -27,8 +27,8 @@ resource "aws_instance" "webserver" {
 }
 
 resource "aws_key_pair" "kp" {
-  key_name   = "vidly"
-  public_key = file(var.ssh_pub_key_path)
+  key_name   = "YOUR_KEY_NAME" # Remember to replace it with the name of your key (without the.pem extension)
+  public_key = file(var.ssh_pub_key_path) # The public key file associated with your instance
 }
 
 resource "aws_eip" "ip" {

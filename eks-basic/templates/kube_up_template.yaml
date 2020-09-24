@@ -1,0 +1,204 @@
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ${NAMESPACE}
+  labels:
+    name: ${NAMESPACE}
+---
+# ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fleact-config
+  namespace: ${NAMESPACE}
+data:
+  ENV: "production"
+---
+# Deployment (Backend)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    matchLabels:
+      app: fleact
+      tier: backend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fleact
+        tier: backend
+        track: stable
+    spec:
+      containers:
+        - name: backend
+          image: "<ECR REPO>"
+          ports:
+            - name: http
+              containerPort: 5000
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+          env:
+            - name: ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: fleact-config
+                  key: ENV
+---
+# Service (Backend)
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: ${NAMESPACE}
+  labels:
+    app: fleact
+spec:
+  selector:
+    app: fleact
+    tier: backend
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: http
+---
+# Horizontal Pod Autoscaling (Backend)
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend
+  namespace: ${NAMESPACE}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+# Deployment (Frontend)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    matchLabels:
+      app: fleact
+      tier: frontend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: fleact
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+      - name: frontend
+        image: "<FRONTEND ECR REPO>"
+        ports:
+        - name: http
+          containerPort: 80
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/usr/sbin/nginx","-s","quit"]
+---
+# Service (Frontend)
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: ${NAMESPACE}
+spec:
+  selector:
+    app: fleact
+    tier: frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+# Horizontal Pod Autoscaling (Frontend)
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: frontend
+  namespace: ${NAMESPACE}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: frontend
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 40
+---
+# TLS Cert and Key for Ingress
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: tls-secret
+  namespace: ${NAMESPACE}
+data:
+  tls.crt: ${TLS_CRT}
+  tls.key: ${TLS_KEY}
+---
+# Nginx Ingress
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: ${NAMESPACE}
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+spec:
+  tls:
+  - hosts:
+    - <SUBDOMAIN>.<DOMAIN>
+    secretName: tls-secret
+  rules:
+  - host: <SUBDOMAIN>.<DOMAIN>
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: frontend
+            servicePort: 80
+        - path: /api
+          backend:
+            serviceName: backend
+            servicePort: 5000

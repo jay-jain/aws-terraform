@@ -1,0 +1,144 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "EKS Managed Nodes (SSH access: false) [created by eksctl]",
+    "Mappings": {
+        "ServicePrincipalPartitionMap": {
+            "aws": {
+                "EC2": "ec2.amazonaws.com",
+                "EKS": "eks.amazonaws.com",
+                "EKSFargatePods": "eks-fargate-pods.amazonaws.com"
+            },
+            "aws-cn": {
+                "EC2": "ec2.amazonaws.com.cn",
+                "EKS": "eks.amazonaws.com",
+                "EKSFargatePods": "eks-fargate-pods.amazonaws.com"
+            },
+            "aws-us-gov": {
+                "EC2": "ec2.amazonaws.com",
+                "EKS": "eks.amazonaws.com",
+                "EKSFargatePods": "eks-fargate-pods.amazonaws.com"
+            }
+        }
+    },
+    "Resources": {
+        "ManagedNodeGroup": {
+            "Type": "AWS::EKS::Nodegroup",
+            "Properties": {
+                "AmiType": "AL2_x86_64",
+                "ClusterName": "name",
+                "DiskSize": 80,
+                "InstanceTypes": [
+                    "t3.medium"
+                ],
+                "Labels": {
+                    "alpha.eksctl.io/cluster-name": "name",
+                    "alpha.eksctl.io/nodegroup-name": "nodegroup-name"
+                },
+                "NodeRole": {
+                    "Fn::GetAtt": [
+                        "NodeInstanceRole",
+                        "Arn"
+                    ]
+                },
+                "NodegroupName": "nodegroup-name",
+                "ScalingConfig": {
+                    "DesiredSize": 2,
+                    "MaxSize": 3,
+                    "MinSize": 1
+                },
+                "Subnets": {
+                    "Fn::Split": [
+                        ",",
+                        {
+                            "Fn::ImportValue": "eksctl-name-cluster::SubnetsPublic"
+                        }
+                    ]
+                },
+                "Tags": {
+                    "alpha.eksctl.io/nodegroup-name": "nodegroup-name",
+                    "alpha.eksctl.io/nodegroup-type": "managed"
+                }
+            }
+        },
+        "NodeInstanceRole": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [
+                        {
+                            "Action": [
+                                "sts:AssumeRole"
+                            ],
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    {
+                                        "Fn::FindInMap": [
+                                            "ServicePrincipalPartitionMap",
+                                            {
+                                                "Ref": "AWS::Partition"
+                                            },
+                                            "EC2"
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "Version": "2012-10-17"
+                },
+                "ManagedPolicyArns": [
+                    {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+                    },
+                    {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+                    },
+                    {
+                        "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/AmazonEKS_CNI_Policy"
+                    }
+                ],
+                "Path": "/",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": {
+                            "Fn::Sub": "${AWS::StackName}/NodeInstanceRole"
+                        }
+                    }
+                ]
+            }
+        },
+        "PolicyAutoScaling": {
+            "Type": "AWS::IAM::Policy",
+            "Properties": {
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Action": [
+                                "autoscaling:DescribeAutoScalingGroups",
+                                "autoscaling:DescribeAutoScalingInstances",
+                                "autoscaling:DescribeLaunchConfigurations",
+                                "autoscaling:DescribeTags",
+                                "autoscaling:SetDesiredCapacity",
+                                "autoscaling:TerminateInstanceInAutoScalingGroup",
+                                "ec2:DescribeLaunchTemplateVersions"
+                            ],
+                            "Effect": "Allow",
+                            "Resource": "*"
+                        }
+                    ],
+                    "Version": "2012-10-17"
+                },
+                "PolicyName": {
+                    "Fn::Sub": "${AWS::StackName}-PolicyAutoScaling"
+                },
+                "Roles": [
+                    {
+                        "Ref": "NodeInstanceRole"
+                    }
+                ]
+            }
+        }
+    }
+}

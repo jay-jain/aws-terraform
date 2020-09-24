@@ -13,7 +13,7 @@ resource "aws_instance" "webserver" {
     type        = "ssh"
     user        = "ec2-user"
     host        = self.public_ip
-    private_key = file(var.ssh_priv_key_path)
+    private_key = file(var.ssh_priv_key_path) # Your private key; usually stored in your ~/.ssh directory
   }
 
   provisioner "remote-exec" {
@@ -31,9 +31,8 @@ resource "aws_instance" "webserver" {
 }
 
 resource "aws_key_pair" "kp" {
-  key_name   = "ouroboros"
-  public_key = file(var.ssh_pub_key_path)
-
+  key_name   = "YOUR_KEY_NAME" # Remember to replace it with the name of your key (without the.pem extension)
+  public_key = file(var.ssh_pub_key_path) # The public key file associated with your instance
 }
 
 

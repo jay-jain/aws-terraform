@@ -11,7 +11,7 @@ provider "aws" {
 
 resource "aws_eks_cluster" "devops_cluster" {
   name     = "devops-cluster"
-  role_arn = "arn:aws:iam::076858682202:role/aws-service-role/eks.amazonaws.com/AWSServiceRoleForAmazonEKS"
+  role_arn = "arn:aws:iam::0000000000000:role/aws-service-role/eks.amazonaws.com/AWSServiceRoleForAmazonEKS"
 
   vpc_config {
     subnet_ids = [aws_subnet.public-1.id, aws_subnet.public-2.id,

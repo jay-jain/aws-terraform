@@ -1,5 +1,4 @@
-### NOTE: For this to work, the AWS credentials must have access to 
-### the iam:PassRole. 
+### NOTE: For this to work, the AWS credentials must have access to iam:PassRole. 
 ### See: https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_switch-role-ec2.html#roles-usingrole-ec2instance-permissions
 
 
@@ -47,3 +46,4 @@ resource "aws_iam_role_policy" "S3FullAcess" {
 }
 EOF
 }
+
