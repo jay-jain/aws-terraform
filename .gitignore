@@ -5,3 +5,5 @@
 **/terraform.tfvars
 keys/*
 **/tls*
+
+**/kube_up.yaml
