@@ -13,7 +13,7 @@
 
 1. Run ```terraform apply``` and deploy EKS cluster
 
-2. Run Bash scripts which will add the EKS Cluster to GitLab
+2. Run `attach-eks-gitlab.sh` script which will add the EKS Cluster to GitLab
 
 3. Run ```config-cluster.sh``` which deploys metrics server, dashboard, generates `node_autoscaler.yaml`, applies `node_autoscaler.yaml`, and deploys nginx ingress controller
 
