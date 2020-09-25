@@ -6,11 +6,8 @@
 ### References :
 
 * See: __https://github.com/cloudposse/terraform-aws-tfstate-backend__
-
-  
-
 * Read more about S3 Backend [here](https://www.terraform.io/docs/backends/types/s3.html)
-
+* Use Terraform to provision backend in one project and use separate projects to provision other resources [Link](https://stackoverflow.com/questions/61851903/how-to-solve-error-loading-state-accessdenied-access-denied-status-code-403-w)
   
 
 # Create Backend
