@@ -67,21 +67,13 @@ Instead of storing the container repositories on your EC2 instance, storing them
 ```
 
 registry['storage'] = {
-
-'s3' => {
-
-'bucket' => '<BUCKET_NAME>',
-
-'region' => 'us-east-1',
-
-},
-
-'redirect' => {
-
-'disable' => false
-
-}
-
+	's3' => {
+		'bucket' => '<BUCKET_NAME>',
+		'region' => 'us-east-1',
+	},
+	'redirect' => {
+		'disable' => false
+	}
 }
 
 ```
@@ -101,25 +93,16 @@ Additionally, you will have to provide the bucket names for each object storage 
 ```
 
 gitlab_rails['object_store_connection'] = {
-
-'provider' => 'AWS',
-
-'region' => 'us-east-1',
-
-'use_iam_profile' => true
-
+	'provider' => 'AWS',
+	'region' => 'us-east-1',
+	'use_iam_profile' => true
 }
-
-  
 
 gitlab_rails['object_store']['enabled'] = true
 
 gitlab_rails['object_store']['storage_options'] = {
-
-'provider' => 'AWS',
-
-'region' => 'us-east-1'
-
+	'provider' => 'AWS',
+	'region' => 'us-east-1'
 }
 
 gitlab_rails['object_store']['proxy_download'] = true
@@ -210,15 +193,9 @@ If you want to boostrap install postfix, you will need some extra code to handle
 
 sudo apt install -y debconf-utils
 
-  
-
 echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections
 
-  
-
 echo "postfix postfix/mailname string gitlab.sci-tings.org" | debconf-set-selections
-
-  
 
 sudo apt-get install -y postfix
 
