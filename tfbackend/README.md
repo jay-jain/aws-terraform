@@ -195,33 +195,11 @@ Note: If you want to use the S3 Remote Backend, you will need to use the `backen
   
 
 ```
-
-  
-
-  
-
 module "terraform_state_backend" {
-
-  
-
-...
-
-  
-
-terraform_backend_config_file_path = ""
-
-  
-
-force_destroy = true
-
-  
-
+	...
+	terraform_backend_config_file_path = ""
+	force_destroy = true
 }
-
-  
-
-  
-
 ```
 
   
@@ -300,15 +278,10 @@ To enable Terraform logging in Powershell:
 
 ```Powershell
 
-  
-
 > $env:TF_LOG="TRACE"
 
-  
-
 > $env:TF_LOG_PATH="logs.txt"
-
-  
+ 
 
 ```
 
