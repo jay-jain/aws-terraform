@@ -45,55 +45,18 @@
 
 ```
 
-  
-
-  
-
 module "terraform_state_backend" {
-
-  
-
-source = "git::https://github.com/cloudposse/terraform-aws-tfstate-backend.git?ref=tags/0.26.0"
-
-  
-
-namespace = "DevSecOpsGroup"
-
-  
-
-stage = "dev"
-
-  
-
-name = var.name_prefix
-
-  
-
-attributes = ["state"]
-
-  
-
-region = "us-east-1"
-
-  
-
-terraform_backend_config_file_path = "."
-
-  
-
-terraform_backend_config_file_name = "backend.tf"
-
-  
-
-force_destroy = false
-
-  
-
+	source = "git::https://github.com/cloudposse/terraform-aws-tfstate-backend.git?ref=tags/0.26.0"
+	namespace = "DevSecOpsGroup"
+	stage = "dev"
+	name = var.name_prefix
+	attributes = ["state"]
+	region = "us-east-1"
+	terraform_backend_config_file_path = "."
+	terraform_backend_config_file_name = "backend.tf"
+	force_destroy = false
 }
-
-  
-
-  
+ 
 
 ```
 
