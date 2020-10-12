@@ -126,47 +126,15 @@ The following resources are created when the above command is run:
 
 ```
 
-  
-
-  
-
 backend "s3" {
-
-  
-
-region = "us-east-1"
-
-  
-
-bucket = "< the name of the S3 state bucket >"
-
-  
-
-key = "terraform.tfstate"
-
-  
-
-dynamodb_table = "< the name of the DynamoDB locking table >"
-
-  
-
-profile = ""
-
-  
-
-role_arn = ""
-
-  
-
-encrypt = true
-
-  
-
+	region = "us-east-1"
+	bucket = "< the name of the S3 state bucket >"
+	key = "terraform.tfstate"
+	dynamodb_table = "< the name of the DynamoDB locking table >"
+	profile = ""
+	role_arn = ""
+	encrypt = true
 }
-
-  
-
-  
 
 ```
 
